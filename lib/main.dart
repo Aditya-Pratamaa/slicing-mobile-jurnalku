@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slicing_jurnalku/catatan_sikap.dart';
+import 'package:slicing_jurnalku/explore.dart';
 import 'package:slicing_jurnalku/login.dart';
 import 'package:slicing_jurnalku/panduan_pengguna.dart';
 import 'package:slicing_jurnalku/pengaturan_akun.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      home: CatatanSikap(),
     );
   }
 }

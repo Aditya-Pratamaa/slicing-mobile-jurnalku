@@ -9,38 +9,38 @@ class CatatanSikap extends StatefulWidget {
 }
 
 class _CatatanSikapState extends State<CatatanSikap> {
-  final List<Map<String, String>> dummyData = [
-    {
-      'no': '1',
-      'kategori': 'Kedisiplinan',
-      'catatan': 'Sering datang terlambat ke sekolah.',
-      'status': 'Dalam Perbaikan',
-      'dilaporkan': 'Pak Budi',
-      'update': '01 Okt 2025',
-      'aksi': '-'
-    },
-    {
-      'no': '2',
-      'kategori': 'Kerjasama',
-      'catatan': 'Mulai menunjukkan peningkatan dalam kerja tim.',
-      'status': 'Sudah Berubah',
-      'dilaporkan': 'Bu Rina',
-      'update': '15 Okt 2025',
-      'aksi': '-'
-    },
-    {
-      'no': '3',
-      'kategori': 'Tanggung Jawab',
-      'catatan': 'Belum mengumpulkan tugas tepat waktu.',
-      'status': 'Dalam Perbaikan',
-      'dilaporkan': 'Pak Joko',
-      'update': '20 Okt 2025',
-      'aksi': '-'
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final dummyData = [
+      {
+        'no': '1',
+        'kategori': 'Kedisiplinan',
+        'catatan': 'Sering datang terlambat ke sekolah.',
+        'status': 'Dalam Perbaikan',
+        'dilaporkan': 'Pak Budi',
+        'update': '01 Okt 2025',
+        'aksi': '-'
+      },
+      {
+        'no': '2',
+        'kategori': 'Kerjasama',
+        'catatan': 'Mulai menunjukkan peningkatan dalam kerja tim.',
+        'status': 'Sudah Berubah',
+        'dilaporkan': 'Bu Rina',
+        'update': '15 Okt 2025',
+        'aksi': '-'
+      },
+      {
+        'no': '3',
+        'kategori': 'Tanggung Jawab',
+        'catatan': 'Belum mengumpulkan tugas tepat waktu.',
+        'status': 'Dalam Perbaikan',
+        'dilaporkan': 'Pak Joko',
+        'update': '20 Okt 2025',
+        'aksi': '-'
+      },
+    ];
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: const CustomAppBar(
@@ -271,77 +271,27 @@ class _CatatanSikapState extends State<CatatanSikap> {
             const SizedBox(height: 30),
 
             // Tabel Catatan
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Column(
-                children: [
-                  if (dummyData.isNotEmpty) ...[
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minWidth: MediaQuery.of(context).size.width,
-                        ),
-                        child: DataTable(
-                          columns: const [
-                            DataColumn(label: Text('NO')),
-                            DataColumn(label: Text('KATEGORI')),
-                            DataColumn(label: Text('CATATAN')),
-                            DataColumn(label: Text('STATUS')),
-                            DataColumn(label: Text('DILAPORKAN')),
-                            DataColumn(label: Text('UPDATE TERAKHIR')),
-                            DataColumn(label: Text('AKSI')),
-                          ],
-                          rows: dummyData
-                              .map(
-                                (item) => DataRow(
-                                  cells: [
-                                    DataCell(Text(item['no']!)),
-                                    DataCell(Text(item['kategori']!)),
-                                    DataCell(Text(item['catatan']!)),
-                                    DataCell(Text(item['status']!)),
-                                    DataCell(Text(item['dilaporkan']!)),
-                                    DataCell(Text(item['update']!)),
-                                    DataCell(Text(item['aksi']!)),
-                                  ],
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: dummyData.length,
+              itemBuilder: (context, index) {
+                final item = dummyData[index];
+                return ExpansionTile(
+                  title: Text(item['kategori'].toString()),
+                  children: [
+                    ListTile(
+                      title: Text("Catatan: ${item['catatan']}"),
+                      subtitle: Text("Dilaporkan oleh: ${item['dilaporkan']}"),
                     ),
-                    const SizedBox(height: 20),
-                  ] else ...[
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 30),
-                      child: Column(
-                        children: [
-                          Icon(Icons.check_circle_outline,
-                              color: Colors.grey, size: 50),
-                          SizedBox(height: 10),
-                          Text(
-                            "Tidak ada catatan",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Text(
-                            "Belum ada catatan sikap yang ditambahkan",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ],
-                      ),
+                    ListTile(
+                      title: Text("Status: ${item['status']}"),
+                      subtitle: Text("Update: ${item['update']}"),
                     ),
                   ],
-                ],
-              ),
-            ),
+                );
+              },
+            )
           ],
         ),
       ),
