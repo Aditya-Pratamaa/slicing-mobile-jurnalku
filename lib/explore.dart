@@ -1,9 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:slicing_jurnalku/dashboard.dart';
+import 'package:slicing_jurnalku/login.dart';
 
 class Explore extends StatefulWidget {
-  const Explore({super.key});
+  final String textLabel;
+  const Explore({super.key, required this.textLabel});
 
   @override
   State<Explore> createState() => _ExploreState();
@@ -164,6 +167,13 @@ class _ExploreState extends State<Explore> {
         ),
         actions: [
           GestureDetector(
+            onTap: () {
+              if (widget.textLabel == "Login") {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+              } else {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+              }
+            },
             child: Container(
               alignment: Alignment.center,
               width: 100,
@@ -174,7 +184,7 @@ class _ExploreState extends State<Explore> {
               ),
               margin: EdgeInsets.only(right: 10),
               child: Text(
-                "Dashboard",
+                widget.textLabel,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white),
               ),

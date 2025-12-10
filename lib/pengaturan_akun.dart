@@ -1,11 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:slicing_jurnalku/widgets/custom_app_bar.dart';
 
-class PengaturanAkunPage extends StatelessWidget {
+class PengaturanAkunPage extends StatefulWidget {
+
   const PengaturanAkunPage({super.key});
+
+  @override
+  State<PengaturanAkunPage> createState() => _PengaturanAkunPageState();
+}
+
+class _PengaturanAkunPageState extends State<PengaturanAkunPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+            appBar: CustomAppBar(
+        nama: "Aditya",
+        kelas: "PPLG XII-4",
+        imagePath: 'assets/images/profile.jpg',
+        onProfileTap: () {
+          _scaffoldKey.currentState?.openDrawer();
+        },
+      ),
+      drawer: CustomAppBar.buildDrawer(context, "Aditya", "PPLG XII-4", 'assets/images/profile.jpg'),
       backgroundColor: const Color(0xFFF4F5F7),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -237,7 +256,6 @@ class PengaturanAkunPage extends StatelessWidget {
     ),
   );
 }
-
 
   // FIELD PASSWORD
   Widget buildPasswordField(String label) {

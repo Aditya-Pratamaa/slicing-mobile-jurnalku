@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:slicing_jurnalku/widgets/custom_app_bar.dart';
 
-class CatatanSikap extends StatefulWidget {
-  const CatatanSikap({super.key});
+class ProgressBelajar extends StatefulWidget {
+  const ProgressBelajar({super.key});
 
   @override
-  State<CatatanSikap> createState() => _CatatanSikapState();
+  State<ProgressBelajar> createState() => _ProgressBelajarState();
 }
 
-class _CatatanSikapState extends State<CatatanSikap> {
+class _ProgressBelajarState extends State<ProgressBelajar> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -16,30 +16,30 @@ class _CatatanSikapState extends State<CatatanSikap> {
     final dummyData = [
       {
         'no': '1',
-        'kategori': 'Kedisiplinan',
-        'catatan': 'Sering datang terlambat ke sekolah.',
+        'kompotensi': 'Kedisiplinan',
+        'guru': 'Pak Budi',
+        'tanggal': '01 Okt 2025',
         'status': 'Dalam Perbaikan',
-        'dilaporkan': 'Pak Budi',
-        'update': '01 Okt 2025',
-        'aksi': '-'
+        'catatan_guru': 'Sering datang terlambat ke sekolah.',
+        'catatan_siswa': 'Sering datang terlambat ke sekolah.'
       },
       {
         'no': '2',
-        'kategori': 'Kerjasama',
-        'catatan': 'Mulai menunjukkan peningkatan dalam kerja tim.',
+        'kompotensi': 'Kerjasama',
+        'guru': 'Bu Rina',
         'status': 'Sudah Berubah',
-        'dilaporkan': 'Bu Rina',
-        'update': '15 Okt 2025',
-        'aksi': '-'
+        'tanggal': '15 Okt 2025',
+        'catatan_guru': 'Mulai menunjukkan peningkatan dalam kerja tim.',
+        'catatan_siswa': 'Mulai menunjukkan peningkatan dalam kerja tim.'
       },
       {
         'no': '3',
-        'kategori': 'Tanggung Jawab',
-        'catatan': 'Belum mengumpulkan tugas tepat waktu.',
+        'kompotensi': 'Tanggung Jawab',
+        'guru': 'Pak Joko',
+        'tanggal': '20 Okt 2025',
         'status': 'Dalam Perbaikan',
-        'dilaporkan': 'Pak Joko',
-        'update': '20 Okt 2025',
-        'aksi': '-'
+        'catatan_guru': 'Belum mengumpulkan tugas tepat waktu.',
+        'catatan_siswa': 'Belum mengumpulkan tugas tepat waktu.'
       },
     ];
 
@@ -61,7 +61,7 @@ class _CatatanSikapState extends State<CatatanSikap> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Catatan Sikap Saya",
+              "Progress Belajar",
               style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
@@ -70,73 +70,43 @@ class _CatatanSikapState extends State<CatatanSikap> {
             ),
             const SizedBox(height: 10),
             Text(
-              "Lihat catatan sikap dan perilaku yang telah dilaporkan",
+              "Pantau perkembangan kompetensi dan materi pembelajaran Anda",
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
-            const SizedBox(height: 35),
+            const SizedBox(height: 10),
 
-            // Card Perhatian
+            // Tanggal
             Container(
-              height: 150,
-              width: double.infinity,
+              alignment: Alignment.center,
+              height: 40,
+              width: 200, // contoh diperkecil
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 238, 227, 210),
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.orange.shade200),
+                color: Colors.blue[100],
+                borderRadius: BorderRadius.circular(10),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Icon(
-                        Icons.info_outline_rounded,
-                        size: 30,
-                        color: Colors.orange.shade400,
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Perhatian",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 167, 103, 8),
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            "Jika Anda merasa ada catatan yang tidak sesuai atau keliru, silakan hubungi guru jurusan untuk mengajukan klarifikasi.",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Color.fromARGB(255, 201, 139, 46),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                padding: EdgeInsets.all(8.0),
+                child: FittedBox(
+                child: Text(
+                  "Thursday, 27 November 2025",
+                  style: TextStyle(
+                    color: Colors.blue[900],
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
+              )
             ),
 
             const SizedBox(height: 30),
 
             // Total Catatan
             Container(
-              height: 150,
+              height: 170,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  color: Colors.grey.shade400,
-                ),
+                border: Border.all(color: Colors.grey.shade400),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(30),
@@ -147,7 +117,7 @@ class _CatatanSikapState extends State<CatatanSikap> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Total Catatan",
+                          "Total Pengajuan",
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w500,
@@ -161,13 +131,14 @@ class _CatatanSikapState extends State<CatatanSikap> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        Text("Semua Status", style: TextStyle(color: Colors.blue[900])),
                       ],
                     ),
                     const CircleAvatar(
                       radius: 30,
                       backgroundColor: Color(0xFFBBDEFB),
                       child: Icon(
-                        Icons.book_outlined,
+                        Icons.check,
                         size: 40,
                         color: Color(0xFF0D47A1),
                       ),
@@ -179,15 +150,15 @@ class _CatatanSikapState extends State<CatatanSikap> {
 
             const SizedBox(height: 30),
 
-            // Dalam Perbaikan
+            // Halaman ini
             Container(
-              height: 150,
+              height: 170,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
                 border: Border.all(color: Colors.grey.shade400),
               ),
-              child: const Padding(
+              child:  Padding(
                 padding: EdgeInsets.all(30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -196,7 +167,7 @@ class _CatatanSikapState extends State<CatatanSikap> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Dalam Perbaikan",
+                          "Halaman ini",
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w500,
@@ -210,15 +181,18 @@ class _CatatanSikapState extends State<CatatanSikap> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+
+                        Text("Semua Status", style: TextStyle(color: Colors.green[900])),
+                        
                       ],
                     ),
                     CircleAvatar(
                       radius: 30,
-                      backgroundColor: Color(0xFFFFF59D),
+                      backgroundColor: Color.fromARGB(255, 214, 214, 213),
                       child: Icon(
-                        Icons.electric_bolt_sharp,
+                        Icons.show_chart,
                         size: 40,
-                        color: Color(0xFFE65100),
+                        color: Color.fromARGB(255, 0, 230, 81),
                       ),
                     ),
                   ],
@@ -228,9 +202,9 @@ class _CatatanSikapState extends State<CatatanSikap> {
 
             const SizedBox(height: 30),
 
-            // Sudah Berubah
+            // Status Pending
             Container(
-              height: 150,
+              height: 170,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
@@ -245,7 +219,7 @@ class _CatatanSikapState extends State<CatatanSikap> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Sudah Berubah",
+                          "Status Pending",
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w500,
@@ -259,15 +233,66 @@ class _CatatanSikapState extends State<CatatanSikap> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+
+                        Text("Perlu Validasi", style: TextStyle(color: Colors.orange)),
                       ],
                     ),
                     CircleAvatar(
                       radius: 30,
                       backgroundColor: Color(0xFFC8E6C9),
                       child: Icon(
-                        Icons.verified_outlined,
+                        Icons.access_time_rounded,
                         size: 40,
-                        color: Color(0xFF1B5E20),
+                        color: Color.fromARGB(255, 231, 145, 6),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Total Halaman
+            Container(
+              height: 170,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.grey.shade400),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Total Halaman",
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          "0",
+                          style: TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        Text("Navigasi Tersedia", style: TextStyle(color: Color.fromARGB(255, 231, 15, 162))),
+                      ],
+                    ),
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Color(0xFFC8E6C9),
+                      child: Icon(
+                        Icons.scale_outlined,
+                        size: 40,
+                        color: Color.fromARGB(255, 231, 145, 6),
                       ),
                     ),
                   ],
@@ -285,23 +310,55 @@ class _CatatanSikapState extends State<CatatanSikap> {
               itemBuilder: (context, index) {
                 final item = dummyData[index];
                 return ExpansionTile(
-                  title: Text(item['kategori'].toString()),
+                  title: Text("Projek Work", style: TextStyle(fontWeight: FontWeight.bold),),
+                  subtitle: Text("Kompetensi dan materi pembelajaran"),
                   children: [
-                    ListTile(
-                      title: Text("Catatan: ${item['catatan']}"),
-                      subtitle: Text("Dilaporkan oleh: ${item['dilaporkan']}"),
-                    ),
-                    ListTile(
-                      title: Text("Status: ${item['status']}"),
-                      subtitle: Text("Update: ${item['update']}"),
-                    ),
-                  ],
+  Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildRow("Kompetensi", item['kompotensi']),
+        _buildRow("Guru", item['guru']),
+        _buildRow("Tanggal", item['tanggal']),
+        _buildRow("Status", item['status']),
+        const SizedBox(height: 10),
+
+        const Text("Catatan Guru:",
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(item['catatan_guru'].toString()),
+
+        const SizedBox(height: 10),
+
+        const Text("Catatan Siswa:",
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(item['catatan_siswa'].toString()),
+      ],
+    ),
+  )
+],
+
                 );
               },
-            )
+            ),
           ],
         ),
       ),
     );
   }
+
+  Widget _buildRow(String title, String? value) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 4),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text("$title:"),
+        Text(value ?? "-",
+            style: const TextStyle(fontWeight: FontWeight.bold)),
+      ],
+    ),
+  );
+}
+
 }

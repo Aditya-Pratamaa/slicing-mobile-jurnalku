@@ -9,6 +9,7 @@ class PanduanPengguna extends StatefulWidget {
 }
 
 class _PanduanPenggunaState extends State<PanduanPengguna> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<Map<String, dynamic>> umumList = [
     {
       "title": "Unggah Profile",
@@ -52,7 +53,16 @@ class _PanduanPenggunaState extends State<PanduanPengguna> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(nama: "Aditya Pratama", kelas: "PPLG XII-4", imagePath: 'assets/images/profile.jpg'),
+      key: _scaffoldKey,
+      appBar: CustomAppBar(
+        nama: "Aditya Pratama",
+        kelas: "PPLG XII-4",
+        imagePath: 'assets/images/profile.jpg',
+        onProfileTap: () {
+          _scaffoldKey.currentState?.openDrawer();
+        },
+      ),
+      drawer: CustomAppBar.buildDrawer(context, "Aditya Pratama", "PPLG XII-4", 'assets/images/profile.jpg'),
       backgroundColor: Colors.grey[100],
       body: SingleChildScrollView(
         child: Padding(

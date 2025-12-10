@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:slicing_jurnalku/dashboard.dart';
+import 'package:slicing_jurnalku/explore.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -154,20 +156,26 @@ class _LoginState extends State<Login> {
                         SizedBox(height: 30),
 
                         // BUTTON LOGIN
-                        Container(
-                          height: 55,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Colors.blue[900],
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Masuk",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  Dashboard()));
+                          },
+                          child: Container(
+                            
+                            height: 55,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.blue[900],
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Masuk",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                         ),
