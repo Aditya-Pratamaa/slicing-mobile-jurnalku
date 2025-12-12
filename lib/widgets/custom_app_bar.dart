@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slicing_jurnalku/dashboard.dart';
+import 'package:slicing_jurnalku/jurnal_pembiasaan.dart';
 import 'package:slicing_jurnalku/profile.dart';
 import 'package:slicing_jurnalku/explore.dart';
 import 'package:slicing_jurnalku/permintaan_saksi.dart';
@@ -158,6 +159,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             title: "Jurnal Pembiasaan",
             onTap: () {
               Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => JurnalPembiasaanPage()));
               
             },
           ),
