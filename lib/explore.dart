@@ -1,6 +1,8 @@
 import 'dart:ui';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:slicing_jurnalku/dashboard.dart';
 import 'package:slicing_jurnalku/login.dart';
 
@@ -13,143 +15,63 @@ class Explore extends StatefulWidget {
 }
 
 class _ExploreState extends State<Explore> {
-  List<Map<String, dynamic>> students = [
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Arya Stark',
-      'nis': '123456',
-      'rombel': 'PPLG XI-4',
-      'rayon': 'Cibedug 2',
-      'jumlah_portfolio': 5,
-      'jumlah_sertifikat': 3,
-    },
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Bran Snow',
-      'nis': '123457',
-      'rombel': 'PPLG XI-2',
-      'rayon': 'Cicurug 1',
-      'jumlah_portfolio': 4,
-      'jumlah_sertifikat': 2,
-    },
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Sansa Putri',
-      'nis': '123458',
-      'rombel': 'PPLG XI-1',
-      'rayon': 'Ciawi 3',
-      'jumlah_portfolio': 6,
-      'jumlah_sertifikat': 4,
-    },
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Jon Aditya',
-      'nis': '123459',
-      'rombel': 'PPLG XI-3',
-      'rayon': 'Tajur 1',
-      'jumlah_portfolio': 3,
-      'jumlah_sertifikat': 1,
-    },
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Tyrion Ramadhan',
-      'nis': '123460',
-      'rombel': 'PPLG XI-5',
-      'rayon': 'Sukasari 2',
-      'jumlah_portfolio': 8,
-      'jumlah_sertifikat': 3,
-    },
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Daenerys Cahya',
-      'nis': '123461',
-      'rombel': 'PPLG XI-2',
-      'rayon': 'Sindangbarang 3',
-      'jumlah_portfolio': 7,
-      'jumlah_sertifikat': 5,
-    },
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Robb Firmansyah',
-      'nis': '123462',
-      'rombel': 'PPLG XI-1',
-      'rayon': 'Wikrama 1',
-      'jumlah_portfolio': 2,
-      'jumlah_sertifikat': 2,
-    },
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Joffrey Ardi',
-      'nis': '123463',
-      'rombel': 'PPLG XI-4',
-      'rayon': 'Cisarua 4',
-      'jumlah_portfolio': 4,
-      'jumlah_sertifikat': 1,
-    },
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Samwell Nugraha',
-      'nis': '123464',
-      'rombel': 'PPLG XI-5',
-      'rayon': 'Cibedug 1',
-      'jumlah_portfolio': 10,
-      'jumlah_sertifikat': 6,
-    },
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Theon Baskara',
-      'nis': '123465',
-      'rombel': 'PPLG XI-3',
-      'rayon': 'Cigombong 2',
-      'jumlah_portfolio': 3,
-      'jumlah_sertifikat': 2,
-    },
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Gendry Salman',
-      'nis': '123466',
-      'rombel': 'PPLG XI-4',
-      'rayon': 'Ciawi 2',
-      'jumlah_portfolio': 5,
-      'jumlah_sertifikat': 3,
-    },
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Podrick Fadillah',
-      'nis': '123467',
-      'rombel': 'PPLG XI-1',
-      'rayon': 'Cisarua 2',
-      'jumlah_portfolio': 1,
-      'jumlah_sertifikat': 1,
-    },
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Hodor Saputra',
-      'nis': '123468',
-      'rombel': 'PPLG XI-2',
-      'rayon': 'Cibedug 3',
-      'jumlah_portfolio': 2,
-      'jumlah_sertifikat': 0,
-    },
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Missandei Zahra',
-      'nis': '123469',
-      'rombel': 'PPLG XI-5',
-      'rayon': 'Tajur 3',
-      'jumlah_portfolio': 6,
-      'jumlah_sertifikat': 4,
-    },
-    {
-      'image': 'assets/images/profile.jpg',
-      'name': 'Greyjoy Putra',
-      'nis': '123470',
-      'rombel': 'PPLG XI-3',
-      'rayon': 'Ciomas 1',
-      'jumlah_portfolio': 4,
-      'jumlah_sertifikat': 2,
-    },
-  ];
+  List<Map<String, dynamic>> students = [];
+  bool isLoading = true;
+  String? errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchStudents();
+  }
+
+  Future<void> fetchStudents() async {
+    setState(() {
+      isLoading = true;
+      errorMessage = null;
+    });
+
+    try {
+      final response = await http.get(
+        Uri.parse('http://localhost:8000/api/students'),
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        setState(() {
+          students = data.map((student) {
+            return {
+              'id': student['id'],
+              'name': student['name'] ?? '',
+              'nis': student['nis'] ?? '',
+              'rombel': student['rombel'] ?? '',
+              'photo_profile': student['photo_profile'] ?? '',
+              'grade': student['grade'] ?? '',
+            };
+          }).toList();
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          errorMessage = 'Gagal memuat data: ${response.statusCode}';
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        errorMessage = 'Error: $e';
+        isLoading = false;
+      });
+    }
+  }
+
+  String getImageUrl(String? photoProfile) {
+    if (photoProfile == null || photoProfile.isEmpty) {
+      return 'assets/images/profile.jpg';
+    }
+    // Construct full URL for the image
+    return 'http://localhost:8000/storage/$photoProfile';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -369,19 +291,55 @@ class _ExploreState extends State<Explore> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Menampilkan 1 - 12 dari 538 siswa",
+                      isLoading
+                          ? "Memuat data..."
+                          : "Menampilkan 1 - ${students.length} dari ${students.length} siswa",
                       textAlign: TextAlign.start,
                     ),
                     SizedBox(height: 20),
-                    ListView.separated(
-                      separatorBuilder: (context, index) {
-                        return SizedBox(height: 10);
-                      },
-                      shrinkWrap: true,
-                      itemCount: 12,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        final student = students[index];
+                    if (isLoading)
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    else if (errorMessage != null)
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                errorMessage!,
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              SizedBox(height: 10),
+                              ElevatedButton(
+                                onPressed: fetchStudents,
+                                child: Text('Coba Lagi'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    else if (students.isEmpty)
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Text('Tidak ada data siswa'),
+                        ),
+                      )
+                    else
+                      ListView.separated(
+                        separatorBuilder: (context, index) {
+                          return SizedBox(height: 10);
+                        },
+                        shrinkWrap: true,
+                        itemCount: students.length,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          final student = students[index];
 
                         return Container(
                           width: double.infinity,
@@ -403,12 +361,28 @@ class _ExploreState extends State<Explore> {
                               // FOTO
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
-                                child: Image.asset(
-                                  student['image'],
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                ),
+                                child: student['photo_profile'] != null &&
+                                        student['photo_profile'].toString().isNotEmpty
+                                    ? Image.network(
+                                        getImageUrl(student['photo_profile']),
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/profile.jpg',
+                                            width: 60,
+                                            height: 60,
+                                            fit: BoxFit.cover,
+                                          );
+                                        },
+                                      )
+                                    : Image.asset(
+                                        'assets/images/profile.jpg',
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                      ),
                               ),
 
                               SizedBox(height: 12),
@@ -428,9 +402,9 @@ class _ExploreState extends State<Explore> {
 
                                   SizedBox(height: 4),
 
-                                  // NIS | ROMBEL | RAYON
+                                  // NIS | ROMBEL
                                   Text(
-                                    "${student['nis']} | ${student['rombel']} | ${student['rayon']}",
+                                    "${student['nis']} | ${student['rombel']}",
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey[600],
@@ -440,47 +414,6 @@ class _ExploreState extends State<Explore> {
                                   SizedBox(height: 10),
 
                                   Divider( color: Colors.grey),
-
-                                  SizedBox(height: 10),
-
-                                  // PORTFOLIO & SERTIFIKAT
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.folder,
-                                            size: 16,
-                                            color: Colors.grey,
-                                          ),
-                                          SizedBox(width: 4),
-                                          Text(
-                                            "${student['jumlah_portfolio']} Portfolio",
-                                            style: TextStyle(fontSize: 12),
-                                          ),
-                                        ],
-                                      ),
-
-                                      SizedBox(width: 15),
-
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.badge,
-                                            size: 16,
-                                            color: Colors.grey,
-                                          ),
-                                          SizedBox(width: 4),
-                                          Text(
-                                            "${student['jumlah_sertifikat']} Sertifikat",
-                                            style: TextStyle(fontSize: 12),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
 
                                   SizedBox(height: 12),
 

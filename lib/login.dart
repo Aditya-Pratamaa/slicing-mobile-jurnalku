@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:slicing_jurnalku/dashboard.dart';
 import 'package:slicing_jurnalku/explore.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -11,7 +13,34 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   bool _obscurePassword = true;
+
+  Future<void> login() async {
+    final username = usernameController.text;
+    final password = passwordController.text;
+
+    final url = Uri.parse("http://127.0.0.1:8000/api/login");
+
+    final response = await http.post(
+      url,
+      body: {"username": username, "password": password},
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+
+      // Login berhasil → pindah ke dashboard
+      Navigator.push(context, MaterialPageRoute(builder: (_) => Dashboard()));
+    } else {
+      // Login gagal → tampilkan error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Login gagal! Username atau password salah")),
+      );
+    }
+  }
 
   List<Map<String, dynamic>> data = [
     {
@@ -104,14 +133,20 @@ class _LoginState extends State<Login> {
                         SizedBox(height: 50),
 
                         // USERNAME
-                        Text("Username atau NIS",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600)),
+                        Text(
+                          "Username atau NIS",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         SizedBox(height: 10),
                         TextField(
+                          controller: usernameController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide(color: Colors.blue[900]!),
@@ -123,15 +158,21 @@ class _LoginState extends State<Login> {
                         SizedBox(height: 30),
 
                         // PASSWORD
-                        Text("Password",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600)),
+                        Text(
+                          "Password",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         SizedBox(height: 10),
                         TextField(
+                          controller: passwordController,
                           obscureText: _obscurePassword,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide(color: Colors.blue[900]!),
@@ -158,10 +199,9 @@ class _LoginState extends State<Login> {
                         // BUTTON LOGIN
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  Dashboard()));
+                            login(); // panggil function login
                           },
                           child: Container(
-                            
                             height: 55,
                             width: double.infinity,
                             decoration: BoxDecoration(
@@ -172,9 +212,10 @@ class _LoginState extends State<Login> {
                               child: Text(
                                 "Masuk",
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
@@ -222,16 +263,18 @@ class _LoginState extends State<Login> {
                               padding: EdgeInsets.all(16),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
-                                border:
-                                    Border.all(color: Colors.grey.shade400),
+                                border: Border.all(color: Colors.grey.shade400),
                               ),
                               child: ListTile(
                                 contentPadding: EdgeInsets.zero,
-                                leading: Icon(item['icon'],
-                                    color: Colors.blue[900]),
-                                title: Text(item['text'],
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
+                                leading: Icon(
+                                  item['icon'],
+                                  color: Colors.blue[900],
+                                ),
+                                title: Text(
+                                  item['text'],
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                                 subtitle: Text(item['subtext']),
                               ),
                             );
@@ -255,17 +298,29 @@ class _LoginState extends State<Login> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            FaIcon(FontAwesomeIcons.whatsapp,
-                                color: Colors.white, size: 25),
+                            FaIcon(
+                              FontAwesomeIcons.whatsapp,
+                              color: Colors.white,
+                              size: 25,
+                            ),
                             SizedBox(width: 25),
-                            FaIcon(FontAwesomeIcons.instagram,
-                                color: Colors.white, size: 25),
+                            FaIcon(
+                              FontAwesomeIcons.instagram,
+                              color: Colors.white,
+                              size: 25,
+                            ),
                             SizedBox(width: 25),
-                            FaIcon(FontAwesomeIcons.linkedin,
-                                color: Colors.white, size: 25),
+                            FaIcon(
+                              FontAwesomeIcons.linkedin,
+                              color: Colors.white,
+                              size: 25,
+                            ),
                             SizedBox(width: 25),
-                            FaIcon(FontAwesomeIcons.youtube,
-                                color: Colors.white, size: 25),
+                            FaIcon(
+                              FontAwesomeIcons.youtube,
+                              color: Colors.white,
+                              size: 25,
+                            ),
                           ],
                         ),
 
